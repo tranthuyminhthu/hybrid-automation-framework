@@ -2,7 +2,7 @@ const fs = require("fs");
 
 // Đường dẫn file JSON
 const jsonFilePath = "cypress/reports/mochawesome.json"; // Điều chỉnh tên file nếu cần
-const outputFile = "cypress/custom-report/custom-report.html"; // Lưu trong cypress/reports
+const outputFile = "cypress/custom-report/index.html"; // Lưu trong cypress/reports
 
 // Đọc file JSON
 const jsonReport = JSON.parse(fs.readFileSync(jsonFilePath, "utf8"));

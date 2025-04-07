@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'cypress/reports/**'
+      - 'cypress/custom-report/**' # Cập nhật để bỏ qua thư mục custom-report
 
 jobs:
   cypress-run:
@@ -27,19 +27,18 @@ jobs:
         run: npm install
 
       - name: Run Cypress tests and generate custom report
-        continue-on-error: true # Tiếp tục chạy các bước sau dù test thất bại
+        continue-on-error: true
         run: |
-          npx cypress run --headless
-          npm run generate-custom-report
-          mv cypress/reports/custom-report.html cypress/reports/index.html
+          npm run test-and-report
+          # File index.html đã được tạo ở cypress/custom-report bởi generateCustomReport.js
 
       - name: Commit and push custom report
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add cypress/reports/index.html
+          git add cypress/custom-report/index.html
           git commit -m "Update custom Cypress test report" || echo "No changes to commit"
-          git push
+          git push || echo "Push failed or no changes to push"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

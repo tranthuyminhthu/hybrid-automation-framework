@@ -7,5 +7,5 @@ Feature: Buzz Posting
     Given that the user is logged in as Admin
     Given the user is on the Buzz page
     When the user enters text into the input field
-    When clicks the "Post" button
+    When clicks the "Post" 
     Then a new post should appear at the top of the Buzz Newsfeed

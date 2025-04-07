@@ -47,13 +47,14 @@ module.exports = defineConfig({
             ...new Set(report.results.map((test) => test.file)),
           ];
           const startTime = new Date(report.stats.start);
-          const executedAt = startTime.toLocaleString("en-GB", {
+          const formattedTime = startTime.toLocaleString("vi-VN", {
             timeZone: "Asia/Ho_Chi_Minh",
           });
 
+          // Test Summary Data
           const passed = report.stats.passes;
           const failed = report.stats.failures;
-          const skipped = report.stats.pending;
+          const skipped = report.stats.skipped;
           const total = report.stats.tests;
           const duration = (report.stats.duration / 1000).toFixed(2);
 
@@ -61,36 +62,32 @@ module.exports = defineConfig({
           const failRate = ((failed / total) * 100).toFixed(2);
 
           const status =
-            failed / total > 0.1
-              ? "🔴 **Status: NOT GOOD**"
-              : "🟢 **Status: GOOD**";
+            failRate > 10 ? "🚨 **Overall Status: Failed**" : "✅ **Overall Status: Good**";
 
+          // Failed Test Cases
           const failedTestCases = report.results
             .flatMap((result) =>
               result.suites.flatMap((suite) =>
                 suite.tests
-                  .filter((t) => t.state === "failed")
-                  .map(
-                    (t) => `• ${t.fullTitle} – _${t.err.message || "No message"}_`
-                  )
+                  .filter((test) => test.state === "failed")
+                  .map((test) => `• ${test.fullTitle} – _${test.err.message || "No message"}_`)
               )
             )
-            .slice(0, 5)
-            .join("\n") || "No failed test cases 🎉";
+            .join("\n");
 
-          const projectName = "Hybrid Automation Framework";
-          const environment = config.env.ENVIRONMENT || "SIT";
-
+          // Message
           const message = {
             text: `📢 **Cypress Test Report** 📢
 
-🏷️ **Project:** ${projectName}
-🌐 **Environment:** ${environment}
-🕒 **Executed At:** ${executedAt}
+🏷️ **Project:** ${process.env.PROJECT_NAME || "Default Project"}
+🌐 **Environment:** ${process.env.ENVIRONMENT || "Production"}
+🕒 **Executed At:** ${formattedTime}
 👤 **Executed by:** ${process.env.USER || "Automation Bot"}
 
-📁 **Test Files:**
-${testFiles.map((file, i) => `   ${i + 1}. ${file}`).join("\n")}
+📁 **Test Suites:**
+${report.results
+  .map((test, index) => `   ${index + 1}. ${test.suite}`)
+  .join("\n")}
 
 📊 **Test Summary:**
 - ✅ **Passed:** ${passed} (${passRate}%)
@@ -101,16 +98,17 @@ ${testFiles.map((file, i) => `   ${i + 1}. ${file}`).join("\n")}
 
 📈 ${status}
 
-🚨 **Failed Test Cases (Top 5):**
+🚨 **Failed Test Cases:**
 ${failedTestCases}
 
 🔗 **Full Report:** [Click to view report](https://hybrid-automation-framework.vercel.app)
 `,
           };
 
+          // Send to Microsoft Teams
           const response = await axios.post(TEAMS_WEBHOOK_URL, message);
 
-          console.log("✅ Successfully sent report to MS Teams!", response.status);
+          console.log("✅ Success send report to MS Teams!", response.status);
         } catch (err) {
           console.error(
             "❌ Failed to send report to MS Teams:",
@@ -122,7 +120,6 @@ ${failedTestCases}
 
       return config;
     },
-
     reporter: "mochawesome",
     reporterOptions: {
       reportDir: "cypress/reports",

@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 7 * * *' # Chạy lúc 7:00 AM UTC mỗi ngày
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'cypress/reports/**' # Không chạy lại khi chỉ thay đổi báo cáo
 
 jobs:
   cypress-run:
@@ -23,14 +28,15 @@ jobs:
 
       - name: Run Cypress tests and generate custom report
         run: |
-          npx cypress run --headless # Chạy headless để tạo báo cáo ban đầu
-          npm run generate-custom-report # Tạo file HTML tùy chỉnh
+          npx cypress run --headless
+          npm run generate-custom-report
+          mv cypress/reports/custom-report.html cypress/reports/index.html
 
       - name: Commit and push custom report
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add cypress/reports/custom-report.html # Thay bằng đường dẫn file HTML tùy chỉnh của bạn
+          git add cypress/reports/index.html
           git commit -m "Update custom Cypress test report" || echo "No changes to commit"
           git push
         env:
@@ -38,5 +44,16 @@ jobs:
 
       - name: Get Vercel URL
         run: |
-          echo "VERCEL_URL=https://[your-vercel-project-name].vercel.app/custom-report.html" >> $GITHUB_ENV
-        # Thay [your-vercel-project-name] bằng tên dự án Vercel của bạn
+          echo "VERCEL_URL=https://hybrid-automation-framework.vercel.app" >> $GITHUB_ENV
+
+      - name: Send email with report link
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: 'Daily Custom Cypress Test Report - ${{ github.run_id }}'
+          body: 'Kính gửi sếp,\n\nDưới đây là link báo cáo test Cypress tùy chỉnh hôm nay: ${{ env.VERCEL_URL }}\n\nTrân trọng,\nThu Tran'
+          to: 'duyvu26120003@gmail.com'
+          from: 'Thu Tran <tranthuyminhthu0611@gmail.com>'

@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DAILY STATUS REPORT</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+    h1 { color: #2c3e50; text-align: center; }
+    .header-info { margin-bottom: 20px; }
+    .header-info p { margin: 5px 0; font-size: 1.1em; }
+    .summary, .suite { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 12px; text-align: left; border: 1px solid #ddd; }
+    th { background: #3498db; color: white; }
+    tr:nth-child(even) { background: #f2f2f2; }
+    .pass { color: #27ae60; font-weight: bold; }
+    .fail { color: #c0392b; font-weight: bold; }
+    .status-good { color: #27ae60; }
+    .status-not-good { color: #c0392b; }
+  </style>
+</head>
+<body>
+  <h1>Daily Status Report</h1>
+
+  <!-- Thông tin Project Name và Environment -->
+  <div class="header-info">
+    <p><strong>Project Name:</strong> Fox</p>
+    <p><strong>Environment:</strong> Test</p>
+  </div>
+
+  <!-- Tổng quan -->
+  <div class="summary">
+    <h2>Summary</h2>
+    <table>
+      <tr><th>Metric</th><th>Value</th></tr>
+      <tr><td>Total Tests</td><td>1</td></tr>
+      <tr><td>Passes</td><td>1</td></tr>
+      <tr><td>Failures</td><td>0</td></tr>
+      <tr><td>Pending</td><td>0</td></tr>
+      <tr><td>Duration</td><td>10.697 seconds</td></tr>
+      <tr><td>Start Time</td><td>2025-04-03T02:39:16.994Z</td></tr>
+      <tr><td>End Time</td><td>2025-04-03T02:39:27.691Z</td></tr>
+      <tr><td>Pass Percentage</td><td>100%</td></tr>
+      <tr><td>Overall Status</td><td><span class="status-good">Good</span></td></tr>
+    </table>
+  </div>
+
+  <!-- Chi tiết Suite và Tests -->
+  <div class="suite">
+    <h2>Suite: Buzz Posting</h2>
+    <p><strong>File:</strong> cypress/test-cases/cucumber/feature/posting.feature</p>
+    <p><strong>Total Duration:</strong> 8.263 seconds</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Test Title</th>
+          <th>Status</th>
+          <th>Duration (ms)</th>
+          <th>Error (if any)</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td>Posting a text update</td>
+          <td><span class="pass">passed</span></td>
+          <td>8263</td>
+          <td>N/A</td>
+        </tr>
+  
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

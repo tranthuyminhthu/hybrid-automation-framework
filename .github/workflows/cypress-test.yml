@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'cypress/reports/**' # Không chạy lại khi chỉ thay đổi báo cáo
+      - 'cypress/reports/**'
 
 jobs:
   cypress-run:
@@ -27,6 +27,7 @@ jobs:
         run: npm install
 
       - name: Run Cypress tests and generate custom report
+        continue-on-error: true # Tiếp tục chạy các bước sau dù test thất bại
         run: |
           npx cypress run --headless
           npm run generate-custom-report

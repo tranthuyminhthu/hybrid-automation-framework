@@ -106,6 +106,5 @@ htmlContent += `
 </html>
 `;
 
-// Ghi nội dung vào file HTML
 fs.writeFileSync(outputFile, htmlContent, "utf8");
 console.log(`Custom HTML report generated at ${outputFile}`);

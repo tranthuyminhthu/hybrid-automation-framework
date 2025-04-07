@@ -55,5 +55,5 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: 'Daily Custom Cypress Test Report - ${{ github.run_id }}'
           body: 'Kính gửi sếp,\n\nDưới đây là link báo cáo test Cypress tùy chỉnh hôm nay: ${{ env.VERCEL_URL }}\n\nTrân trọng,\nThu Tran'
-          to: 'duyvu26120003@gmail.com'
+          to: 'duyvu2612003@gmail.com'
           from: 'Thu Tran <tranthuyminhthu0611@gmail.com>'

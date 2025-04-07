@@ -2,13 +2,13 @@ name: Cypress Test and Deploy Custom Report to Vercel
 
 on:
   schedule:
-    - cron: '0 7 * * *' # Chạy lúc 7:00 AM UTC mỗi ngày
+    - cron: '0 7 * * *'
   workflow_dispatch:
   push:
     branches:
       - main
     paths-ignore:
-      - 'cypress/custom-report/**' # Cập nhật để bỏ qua thư mục custom-report
+      - 'cypress/custom-report/**'
 
 jobs:
   cypress-run:

@@ -2,13 +2,13 @@ name: Cypress Test and Deploy Custom Report to Vercel
 
 on:
   schedule:
-    - cron: '0 7 * * *'
+    - cron: '0 7 * * *'  # Chạy mỗi ngày lúc 7h sáng UTC (14h Việt Nam)
   workflow_dispatch:
   push:
     branches:
       - main
     paths-ignore:
-      - 'cypress/custom-report/**'
+      - 'cypress/custom-report/**'  # Không kích hoạt nếu chỉ thay đổi file báo cáo
 
 jobs:
   cypress-run:
@@ -26,13 +26,24 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Cypress tests and generate custom report
+      - name: Cấp quyền thực thi cho script
+        run: chmod +x run-cypress-conditionally.sh
+
+      - name: Kiểm tra quyền thực thi script
+        run: ls -l run-cypress-conditionally.sh
+
+      - name: Chạy Cypress test (cron: toàn bộ, push: có điều kiện)
         continue-on-error: true
         run: |
-          npm run test-and-report
-          # File index.html đã được tạo ở cypress/custom-report bởi generateCustomReport.js
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            echo "🕒 Cron job: chạy toàn bộ test"
+            npm run test-and-report
+          else
+            echo "🚀 Push: kiểm tra file thay đổi"
+            bash ./run-cypress-conditionally.sh
+          fi
 
-      - name: Commit and push custom report
+      - name: Commit và push custom report
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
@@ -42,11 +53,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get Vercel URL
-        run: |
-          echo "VERCEL_URL=https://hybrid-automation-framework.vercel.app" >> $GITHUB_ENV
+      - name: Thiết lập Vercel URL
+        run: echo "VERCEL_URL=https://hybrid-automation-framework.vercel.app" >> $GITHUB_ENV
 
-      - name: Send email with report link
+      - name: Gửi email với link báo cáo
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -54,6 +64,6 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: 'Daily Custom Cypress Test Report - ${{ github.run_id }}'
-          body: 'Kính gửi sếp,\n\nDưới đây là link báo cáo test Cypress tùy chỉnh hôm nay: ${{ env.VERCEL_URL }}\n\nTrân trọng,\nThu Tran'
+          body: '\n\nDưới đây là link báo cáo test Cypress tùy chỉnh hôm nay: ${{ env.VERCEL_URL }}\n\nTrân trọng,\nThu Tran'
           to: 'duyvu2612003@gmail.com'
           from: 'Thu Tran <tranthuyminhthu0611@gmail.com>'

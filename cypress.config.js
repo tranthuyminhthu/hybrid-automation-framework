@@ -99,7 +99,7 @@ module.exports = defineConfig({
                 process.env.ENVIRONMENT || "SIT"
               } on ${formattedTime}** 📢\n\n` +
               `📈 ${status}\n\n` +
-              `🔗 **Full Report:** [Click to view report](https://hybrid-automation-framework.vercel.app)\n` +
+              `🔗 **Full Report:** [Click to view report](https://hybrid-automation-framework.vercel.app)\n\n` +
               `📁 **Test Suites:**\n` +
               `${testSuites}\n\n` +
               `📊 **Test Summary:**\n` +

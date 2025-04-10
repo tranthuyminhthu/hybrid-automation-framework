@@ -66,13 +66,17 @@ module.exports = defineConfig({
               ? "🚨 **Overall Status: Failed**"
               : "✅ **Overall Status: Good**";
 
-          // Failed Test Cases (Chỉ hiển thị tiêu đề tổng quát)
+          // Failed Test Cases (Chỉ lấy câu đầu của lỗi)
           const failedTestCases = report.results
             .flatMap((result) =>
               result.suites.flatMap((suite) =>
                 suite.tests
                   .filter((test) => test.state === "failed")
-                  .map((test) => `• ${test.fullTitle}`)
+                  .map((test) => {
+                    const errorMessage = test.err.message || "No message";
+                    const firstSentence = errorMessage.split(".")[0];
+                    return `• ${test.fullTitle} – _${firstSentence}_`;
+                  })
               )
             )
             .join("\n") || "No failed test cases";

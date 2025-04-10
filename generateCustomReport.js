@@ -1,26 +1,21 @@
 const fs = require("fs");
 
-// Đường dẫn file JSON
 const jsonFilePath = "cypress/reports/mochawesome.json"; // Điều chỉnh tên file nếu cần
 const outputFile = "cypress/custom-report/index.html"; // Lưu trong cypress/reports
 
-// Đọc file JSON
 const jsonReport = JSON.parse(fs.readFileSync(jsonFilePath, "utf8"));
 
-// Trích xuất dữ liệu
 const stats = jsonReport.stats;
 const suite = jsonReport.results[0].suites[0];
 const tests = suite.tests;
 
-// Thông tin bổ sung
-const projectName = "Fox"; // Lấy từ package.json hoặc tùy chỉnh
-const environment = "Test"; // Có thể thay đổi (ví dụ: "Production", "Staging")
+const projectName = "Orange HRM Project";
+const environment = "SIT";
 
-// Tính toán trạng thái tổng thể
-const failToPassRatio = stats.passes > 0 ? (stats.failures / stats.passes) * 100 : 0;
+const failToPassRatio =
+  stats.passes > 0 ? (stats.failures / stats.passes) * 100 : 0;
 const overallStatus = failToPassRatio > 10 ? "Not Good" : "Good";
 
-// Tạo nội dung HTML
 let htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
@@ -46,13 +41,13 @@ let htmlContent = `
 <body>
   <h1>Daily Status Report</h1>
 
-  <!-- Thông tin Project Name và Environment -->
+  <!-- Project Name and Environment -->
   <div class="header-info">
     <p><strong>Project Name:</strong> ${projectName}</p>
     <p><strong>Environment:</strong> ${environment}</p>
   </div>
 
-  <!-- Tổng quan -->
+  <!-- Summary -->
   <div class="summary">
     <h2>Summary</h2>
     <table>
@@ -65,11 +60,13 @@ let htmlContent = `
       <tr><td>Start Time</td><td>${stats.start}</td></tr>
       <tr><td>End Time</td><td>${stats.end}</td></tr>
       <tr><td>Pass Percentage</td><td>${stats.passPercent}%</td></tr>
-      <tr><td>Overall Status</td><td><span class="${overallStatus === 'Good' ? 'status-good' : 'status-not-good'}">${overallStatus}</span></td></tr>
+      <tr><td>Overall Status</td><td><span class="${
+        overallStatus === "Good" ? "status-good" : "status-not-good"
+      }">${overallStatus}</span></td></tr>
     </table>
   </div>
 
-  <!-- Chi tiết Suite và Tests -->
+  <!-- Suite and Tests -->
   <div class="suite">
     <h2>Suite: ${suite.title}</h2>
     <p><strong>File:</strong> ${jsonReport.results[0].file}</p>
@@ -86,12 +83,13 @@ let htmlContent = `
       <tbody>
 `;
 
-// Thêm từng test vào bảng
 tests.forEach((test) => {
   htmlContent += `
         <tr>
           <td>${test.title}</td>
-          <td><span class="${test.state === 'passed' ? 'pass' : 'fail'}">${test.state}</span></td>
+          <td><span class="${test.state === "passed" ? "pass" : "fail"}">${
+    test.state
+  }</span></td>
           <td>${test.duration}</td>
           <td>${test.err.message ? test.err.message : "N/A"}</td>
         </tr>

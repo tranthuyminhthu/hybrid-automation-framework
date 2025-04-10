@@ -63,8 +63,8 @@ module.exports = defineConfig({
 
           const status =
             failRate > 10
-              ? "🚨 **Overall Status: Failed**"
-              : "✅ **Overall Status: Good**";
+              ? "🚨 **Overall Status: NOT GOOD**"
+              : "✅ **Overall Status: GOOD**";
 
           // Failed Test Cases
           const failedTestCases =
@@ -93,25 +93,23 @@ module.exports = defineConfig({
           // Message
           const message = {
             text:
-              `📢 **Cypress Test Report** 📢\n\n` +
-              `🏷️ **Project:** ${
+              `📢 **Cypress Test Report of ${
                 process.env.PROJECT_NAME || "Orange HRM Project"
-              }\n` +
-              `🌐 **Environment:** ${process.env.ENVIRONMENT || "SIT"}\n` +
-              `🕒 **Executed At:** ${formattedTime}\n` +
-              `👤 **Executed by:** ${process.env.USER || "Automation Bot"}\n` +
+              } at ${
+                process.env.ENVIRONMENT || "SIT"
+              } on ${formattedTime}** 📢\n\n` +
+              `📈 ${status}\n\n` +
+              `🔗 **Full Report:** [Click to view report](https://hybrid-automation-framework.vercel.app)` +
               `📁 **Test Suites:**\n` +
               `${testSuites}\n\n` +
               `📊 **Test Summary:**\n` +
-              `- ✅ **Passed:** ${passed} (${passRate}%)\n` +
-              `- ❌ **Failed:** ${failed} (${failRate}%)\n` +
-              `- ⚠️ **Skipped:** ${skipped}\n` +
-              `- 🔢 **Total Tests:** ${total}\n` +
-              `- ⏳ **Duration:** ${duration}s\n\n` +
-              `📈 ${status}\n\n` +
+              `- **Passed:** ${passed} (${passRate}%)\n` +
+              `- **Failed:** ${failed} (${failRate}%)\n` +
+              `- **Skipped:** ${skipped}\n` +
+              `- **Total Tests:** ${total}\n` +
+              `- **Duration:** ${duration}s\n\n` +
               `🚨 **Failed Test Cases:**\n` +
-              `${failedTestCases}\n\n` +
-              `🔗 **Full Report:** [Click to view report](https://hybrid-automation-framework.vercel.app)`,
+              `${failedTestCases}\n\n`,
           };
 
           // Send to Microsoft Teams

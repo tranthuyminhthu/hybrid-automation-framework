@@ -2,14 +2,14 @@ name: Cypress Test and Deploy Custom Report to Vercel
 
 on:
   schedule:
-    - cron: '0 7 * * *'
+    - cron: "0 7 * * *"
 
   workflow_dispatch:
   push:
     branches:
       - main
     paths-ignore:
-      - 'cypress/custom-report/**'
+      - "cypress/custom-report/**"
 
 jobs:
   cypress-run:
@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         run: npm install
@@ -53,7 +53,19 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: 'Daily Custom Cypress Test Report - ${{ github.run_id }}'
-          body: '\n\nDưới đây là link báo cáo test Cypress tùy chỉnh hôm nay: ${{ env.VERCEL_URL }}\n\nTrân trọng,\nThu Tran'
-          to: 'duyvu2612003@gmail.com'
-          from: 'Thu Tran <tranthuyminhthu0611@gmail.com>'
+          subject: "Daily Custom Cypress Test Report - ${{ github.run_id }}"
+          body: |
+            Dear Sir/Madam,
+
+            Please find below the customized Cypress test report with the following details:
+
+            - Project name: {{ PROJECT_NAME }}
+            - Environment: {{ ENVIRONMENT_NAME }}
+            - Execution date: {{ RUN_DATE }}
+
+            Report link: ${{ env.VERCEL_URL }}
+
+            Sincerely,  
+            Thu Tran
+          to: "duyvu2612003@gmail.com"
+          from: "Thu Tran <tranthuyminhthu0611@gmail.com>"

@@ -62,18 +62,20 @@ module.exports = defineConfig({
           const failRate = ((failed / total) * 100).toFixed(2);
 
           const status =
-            failRate > 10 ? "🚨 **Overall Status: Failed**" : "✅ **Overall Status: Good**";
+            failRate > 10
+              ? "🚨 **Overall Status: Failed**"
+              : "✅ **Overall Status: Good**";
 
-          // Failed Test Cases
+          // Failed Test Cases (Chỉ hiển thị tiêu đề tổng quát)
           const failedTestCases = report.results
             .flatMap((result) =>
               result.suites.flatMap((suite) =>
                 suite.tests
                   .filter((test) => test.state === "failed")
-                  .map((test) => `• ${test.fullTitle} – _${test.err.message || "No message"}_`)
+                  .map((test) => `• ${test.fullTitle}`)
               )
             )
-            .join("\n");
+            .join("\n") || "No failed test cases";
 
           // Message
           const message = {

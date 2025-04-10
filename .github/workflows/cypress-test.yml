@@ -59,9 +59,9 @@ jobs:
 
             Please find below the customized Cypress test report with the following details:
 
-            - Project name: {{ PROJECT_NAME }}
-            - Environment: {{ ENVIRONMENT_NAME }}
-            - Execution date: {{ RUN_DATE }}
+            - Project name: Orange HRM
+            - Environment: SIT
+            - Execution date: 10/04/2025
 
             Report link: ${{ env.VERCEL_URL }}
 

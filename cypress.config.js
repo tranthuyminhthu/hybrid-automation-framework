@@ -108,8 +108,8 @@ module.exports = defineConfig({
               `- **Skipped:** ${skipped}\n` +
               `- **Total Tests:** ${total}\n` +
               `- **Duration:** ${duration}s\n\n` +
-              `🚨 **Failed Test Cases:**\n` +
-              `- ${failedTestCases}\n\n`,
+              `🚨 **Failed Test Cases:**\n\n` +
+              `${failedTestCases}\n\n`,
           };
 
           // Send to Microsoft Teams

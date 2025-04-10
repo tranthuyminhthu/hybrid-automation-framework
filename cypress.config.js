@@ -66,7 +66,7 @@ module.exports = defineConfig({
               ? "🚨 **Overall Status: Failed**"
               : "✅ **Overall Status: Good**";
 
-          // Failed Test Cases (Chỉ lấy câu đầu của lỗi)
+          // Failed Test Cases
           const failedTestCases = report.results
             .flatMap((result) =>
               result.suites.flatMap((suite) =>
@@ -81,6 +81,13 @@ module.exports = defineConfig({
             )
             .join("\n") || "No failed test cases";
 
+          // Test Suites
+          const testSuites = report.results
+            .flatMap((result) => result.suites.map((suite) => suite.title))
+            .filter((title) => title) // Loại bỏ title rỗng
+            .map((title, index) => `   ${index + 1}. ${title}`)
+            .join("\n") || "No test suites found";
+
           // Message
           const message = {
             text: `📢 **Cypress Test Report** 📢
@@ -91,9 +98,7 @@ module.exports = defineConfig({
 👤 **Executed by:** ${process.env.USER || "Automation Bot"}
 
 📁 **Test Suites:**
-${report.results
-  .map((test, index) => `   ${index + 1}. ${test.suite}`)
-  .join("\n")}
+${testSuites}
 
 📊 **Test Summary:**
 - ✅ **Passed:** ${passed} (${passRate}%)

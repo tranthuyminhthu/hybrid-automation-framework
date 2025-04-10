@@ -99,7 +99,7 @@ module.exports = defineConfig({
                 process.env.ENVIRONMENT || "SIT"
               } on ${formattedTime}** 📢\n\n` +
               `📈 ${status}\n\n` +
-              `🔗 **Full Report:** [Click to view report](https://hybrid-automation-framework.vercel.app)` +
+              `🔗 **Full Report:** [Click to view report](https://hybrid-automation-framework.vercel.app)\n` +
               `📁 **Test Suites:**\n` +
               `${testSuites}\n\n` +
               `📊 **Test Summary:**\n` +
@@ -109,7 +109,7 @@ module.exports = defineConfig({
               `- **Total Tests:** ${total}\n` +
               `- **Duration:** ${duration}s\n\n` +
               `🚨 **Failed Test Cases:**\n` +
-              `${failedTestCases}\n\n`,
+              `- ${failedTestCases}\n\n`,
           };
 
           // Send to Microsoft Teams

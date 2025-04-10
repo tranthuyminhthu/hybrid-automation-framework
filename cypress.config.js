@@ -97,7 +97,7 @@ module.exports = defineConfig({
                 process.env.PROJECT_NAME || "Orange HRM Project"
               } at ${
                 process.env.ENVIRONMENT || "SIT"
-              } on ${formattedTime} [Click to view detail](https://hybrid-automation-framework.vercel.app)** 📢\n\n` +
+              } on ${formattedTime} [Click to view detail](https://hybrid-automation-framework.vercel.app)**\n\n` +
               `${status}\n\n` +
               `📁 **Test Suites:**\n\n` +
               `${testSuites}\n\n` +
@@ -129,7 +129,7 @@ module.exports = defineConfig({
     reporter: "mochawesome",
     reporterOptions: {
       reportDir: "cypress/reports",
-      overwrite: true,
+      overwrite: false,
       html: true,
       json: true,
     },

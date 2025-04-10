@@ -67,53 +67,51 @@ module.exports = defineConfig({
               : "✅ **Overall Status: Good**";
 
           // Failed Test Cases
-          const failedTestCases = report.results
-            .flatMap((result) =>
-              result.suites.flatMap((suite) =>
-                suite.tests
-                  .filter((test) => test.state === "failed")
-                  .map((test) => {
-                    const errorMessage = test.err.message || "No message";
-                    const firstSentence = errorMessage.split(".")[0];
-                    return `• ${test.fullTitle} – _${firstSentence}_`;
-                  })
+          const failedTestCases =
+            report.results
+              .flatMap((result) =>
+                result.suites.flatMap((suite) =>
+                  suite.tests
+                    .filter((test) => test.state === "failed")
+                    .map((test) => {
+                      const errorMessage = test.err.message || "No message";
+                      const firstSentence = errorMessage.split(".")[0];
+                      return `• ${test.fullTitle} – _${firstSentence}_`;
+                    })
+                )
               )
-            )
-            .join("\n") || "No failed test cases";
+              .join("\n") || "No failed test cases";
 
           // Test Suites
-          const testSuites = report.results
-            .flatMap((result) => result.suites.map((suite) => suite.title))
-            .filter((title) => title) // Loại bỏ title rỗng
-            .map((title, index) => `   ${index + 1}. ${title}`)
-            .join("\n") || "No test suites found";
+          const testSuites =
+            report.results
+              .flatMap((result) => result.suites.map((suite) => suite.title))
+              .filter((title) => title) // Loại bỏ title rỗng
+              .map((title, index) => `   ${index + 1}. ${title}`)
+              .join("\n") || "No test suites found";
 
           // Message
           const message = {
-            text: `📢 **Cypress Test Report** 📢
-
-🏷️ **Project:** ${process.env.PROJECT_NAME || "Default Project"}
-🌐 **Environment:** ${process.env.ENVIRONMENT || "Production"}
-🕒 **Executed At:** ${formattedTime}
-👤 **Executed by:** ${process.env.USER || "Automation Bot"}
-
-📁 **Test Suites:**
-${testSuites}
-
-📊 **Test Summary:**
-- ✅ **Passed:** ${passed} (${passRate}%)
-- ❌ **Failed:** ${failed} (${failRate}%)
-- ⚠️ **Skipped:** ${skipped}
-- 🔢 **Total Tests:** ${total}
-- ⏳ **Duration:** ${duration}s
-
-📈 ${status}
-
-🚨 **Failed Test Cases:**
-${failedTestCases}
-
-🔗 **Full Report:** [Click to view report](https://hybrid-automation-framework.vercel.app)
-`,
+            text:
+              `📢 **Cypress Test Report** 📢\n\n` +
+              `🏷️ **Project:** ${
+                process.env.PROJECT_NAME || "Orange HRM Project"
+              }\n` +
+              `🌐 **Environment:** ${process.env.ENVIRONMENT || "SIT"}\n` +
+              `🕒 **Executed At:** ${formattedTime}\n` +
+              `👤 **Executed by:** ${process.env.USER || "Automation Bot"}\n` +
+              `📁 **Test Suites:**\n` +
+              `${testSuites}\n\n` +
+              `📊 **Test Summary:**\n` +
+              `- ✅ **Passed:** ${passed} (${passRate}%)\n` +
+              `- ❌ **Failed:** ${failed} (${failRate}%)\n` +
+              `- ⚠️ **Skipped:** ${skipped}\n` +
+              `- 🔢 **Total Tests:** ${total}\n` +
+              `- ⏳ **Duration:** ${duration}s\n\n` +
+              `📈 ${status}\n\n` +
+              `🚨 **Failed Test Cases:**\n` +
+              `${failedTestCases}\n\n` +
+              `🔗 **Full Report:** [Click to view report](https://hybrid-automation-framework.vercel.app)`,
           };
 
           // Send to Microsoft Teams

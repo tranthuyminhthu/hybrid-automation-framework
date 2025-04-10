@@ -1,15 +1,10 @@
-#!/bin/bash
+echo "🔍 Checking changed files to determine if Cypress tests need to run..."
 
-echo "🔍 Kiểm tra file thay đổi để xác định có cần chạy Cypress test không..."
-
-# Lấy danh sách file thay đổi so với commit trước
 CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
 
-# In ra danh sách file thay đổi
-echo "📄 Các file đã thay đổi:"
+echo "📄 Changed files:"
 echo "$CHANGED_FILES"
 
-# Kiểm tra xem có file nào nằm trong thư mục liên quan đến test
 SHOULD_RUN=false
 
 for file in $CHANGED_FILES; do
@@ -20,9 +15,9 @@ for file in $CHANGED_FILES; do
 done
 
 if [ "$SHOULD_RUN" = true ]; then
-  echo "✅ Có thay đổi liên quan đến test - đang chạy test Cypress..."
+  echo "✅ Changes related to tests detected - running Cypress tests..."
   npm run test-and-report
 else
-  echo "⏭️ Không có thay đổi liên quan đến test - bỏ qua bước test."
-  exit 0  # Thoát với mã 0 để không làm thất bại workflow
+  echo "⏭️ No changes related to tests - skipping test step"
+  exit 0 
 fi

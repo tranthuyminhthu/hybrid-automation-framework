@@ -34,5 +34,5 @@ When('clicks the "Post" button', () => {
 });
 
 Then('a new post should appear at the top of the Buzz Newsfeed', () => {
-  BUZZ_PAGE.postShouldBeDisplayAtTheTopNewFeed(TEXT);  
+  BUZZ_PAGE.postShouldBeDisplayAtTheTopNewFeed();  
 });

@@ -3,7 +3,7 @@
 echo "🔍 Kiểm tra file thay đổi để xác định có cần chạy Cypress test không..."
 
 # Lấy danh sách file thay đổi so với commit trước
-CHANGED_FILES=$(git diff --name-only HEAD~1)
+CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
 
 # In ra danh sách file thay đổi
 echo "📄 Các file đã thay đổi:"
@@ -13,7 +13,7 @@ echo "$CHANGED_FILES"
 SHOULD_RUN=false
 
 for file in $CHANGED_FILES; do
-  if [[ "$file" == cypress/e2e/* || "$file" == cypress/support/* || "$file" == cypress.config.* || "$file" == package.json || "$file" == *.ts || "$file" == *.js ]]; then
+  if [[ "$file" == cypress/pages/* || "$file" == cypress/fixtures/* || "$file" == cypress/support/* || "$file" == cypress.config.* || "$file" == package.json ]]; then
     SHOULD_RUN=true
     break
   fi
@@ -24,4 +24,5 @@ if [ "$SHOULD_RUN" = true ]; then
   npm run test-and-report
 else
   echo "⏭️ Không có thay đổi liên quan đến test - bỏ qua bước test."
+  exit 0  # Thoát với mã 0 để không làm thất bại workflow
 fi

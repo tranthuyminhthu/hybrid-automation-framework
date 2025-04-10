@@ -93,14 +93,13 @@ module.exports = defineConfig({
           // Message
           const message = {
             text:
-              `📢 **Cypress Test Report of ${
+              `**[DAILY STATUS REPORT]${
                 process.env.PROJECT_NAME || "Orange HRM Project"
               } at ${
                 process.env.ENVIRONMENT || "SIT"
-              } on ${formattedTime}** 📢\n\n` +
-              `📈 ${status}\n\n` +
-              `🔗 **Full Report:** [Click to view report](https://hybrid-automation-framework.vercel.app)\n\n` +
-              `📁 **Test Suites:**\n` +
+              } on ${formattedTime} [Click to view detail](https://hybrid-automation-framework.vercel.app)** 📢\n\n` +
+              `${status}\n\n` +
+              `📁 **Test Suites:**\n\n` +
               `${testSuites}\n\n` +
               `📊 **Test Summary:**\n` +
               `- **Passed:** ${passed} (${passRate}%)\n` +
